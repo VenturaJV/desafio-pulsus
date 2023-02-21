@@ -40,20 +40,3 @@ def read_locations(device_id: int = None, db: Session = Depends(get_db)):
         return db.query(Location).filter(Location.device_id == device_id).all()
     else:
         return db.query(Location).all()
-
-
-# TODO - Remover esses dois metodos que são apenas para teste
-@app.get("/devices")
-def find_all(db: Session = Depends(get_db)):
-    return db.query(Device).all()
-
-
-@app.delete("/delete")
-def delete_all(db: Session = Depends(get_db)):
-    devices = db.query(Device).all()
-    for device in devices:
-        db.query(Device).filter(Device.id == device.id).delete()
-    positions = db.query(Location).all()
-    for position in positions:
-        db.query(Location).filter(Location.id == position.id).delete()
-    db.commit()
